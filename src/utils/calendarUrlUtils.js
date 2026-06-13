@@ -292,3 +292,9 @@ export const getWebcalSubscriptionUrl = (eventId, baseUrl) => {
   const httpUrl = `${origin}/api/events/${eventId}/feed.ics`;
   return httpUrl.replace(/^https?:\/\//, 'webcal://');
 };
+
+export const getWebcalUrl = (event) => {
+  if (!event || !event.id) return '';
+  const domain = typeof window !== 'undefined' ? window.location.host : 'eventra.com';
+  return 'webcal://' + domain + '/api/events/' + event.id + '/feed.ics';
+};
