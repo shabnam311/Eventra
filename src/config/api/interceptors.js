@@ -40,10 +40,15 @@ export const createRequestInterceptor = (isDev) => (config) => {
       config.headers["Idempotency-Key"] =
         typeof crypto !== "undefined" && crypto.randomUUID
           ? crypto.randomUUID()
-          : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+          : (typeof crypto !== "undefined" && crypto.getRandomValues ? "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+              const r = crypto.getRandomValues(new Uint8Array(1))[0] % 16;
+              const v = c === "x" ? r : (r & 0x3 | 0x8);
+              return v.toString(16);
+            }) : "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
               const r = Math.random() * 16 | 0;
-              return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-            });
+              const v = c === "x" ? r : (r & 0x3 | 0x8);
+              return v.toString(16);
+            }));
     }
   }
   return config;
@@ -171,11 +176,15 @@ export function setupRequestInterceptor(api, { isDev, buildApiUrl, getAuthToken,
       if (!config.headers["Idempotency-Key"]) {
         config.headers["Idempotency-Key"] = typeof crypto !== "undefined" && crypto.randomUUID
           ? crypto.randomUUID()
-          : "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+          : (typeof crypto !== "undefined" && crypto.getRandomValues ? "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+              const r = crypto.getRandomValues(new Uint8Array(1))[0] % 16;
+              const v = c === "x" ? r : (r & 0x3 | 0x8);
+              return v.toString(16);
+            }) : "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
               const r = Math.random() * 16 | 0;
               const v = c === "x" ? r : (r & 0x3 | 0x8);
               return v.toString(16);
-            });
+            }));
       }
     }
 
