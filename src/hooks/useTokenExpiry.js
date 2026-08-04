@@ -1,7 +1,8 @@
 import { useEffect, useRef, useCallback } from "react";
 import { toast } from "react-toastify";
 import { isTokenValid, decodeTokenPayload } from "../utils/tokenUtils";
-import { syncSecureStorage } from "../utils/secureStorage";
+import { syncSecureStorage } from "../utils/secureStorage.js";
+import { logger } from "../utils/logger.js";
 import { logger } from "../utils/logger";
 export const MAX_TOKEN_EXPIRY_TIMEOUT_MS = 2_147_483_647;
 const TOKEN_EXPIRY_BUFFER_MS = 1_000;
