@@ -705,7 +705,7 @@ class SseMultiplexer {
       clearInterval(this.pingInterval);
       this.pingInterval = null;
     }
-    this.lastSeenFollowers = null;
+    // FIX: Removed this.lastSeenFollowers = null; to prevent TypeError in startHeartbeatChecks
   }
 
   reconnectOnVisibility() {
